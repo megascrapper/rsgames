@@ -1,14 +1,17 @@
 use std::io;
 use crate::dice_game::DiceGame;
+use crate::colour_card_game::ColourCardGame;
 
 mod dice_game;
 mod errors;
+mod colour_card_game;
 
 fn main() {
     println!("Hello, world!\n");
     loop {
         println!("Menu:");
         println!("(1) Dice game");
+        println!("(2) Colour card game");
         println!("(0) Quit\n");
 
         println!("Select menu item:");
@@ -23,7 +26,13 @@ fn main() {
                         Ok(mut game) => game.play(),
                         Err(e) => println!("Error: {}", e)
                     }
-                }
+                },
+                2 => {
+                    match ColourCardGame::new() {
+                        Ok(mut game) => game.play(),
+                        Err(e) => println!("Error: {}", e)
+                    }
+                },
                 _ => println!("Error: invalid selection"),
             }
         } else {

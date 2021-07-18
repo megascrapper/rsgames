@@ -5,7 +5,7 @@ use rand::Rng;
 
 use crate::errors::GameError;
 
-pub struct DiceGamePlayer {
+struct DiceGamePlayer {
     name: String,
     score: i32,
 }
