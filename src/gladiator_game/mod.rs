@@ -9,6 +9,7 @@ mod army;
 pub struct GladiatorGame<'a> {
     army_1: Army<'a>,
     army_2: Army<'a>,
+    round: i32,
 }
 
 impl<'a> GladiatorGame<'_> {
@@ -46,11 +47,16 @@ impl<'a> GladiatorGame<'_> {
         Ok(GladiatorGame {
             army_1: Army::new(player1_name.trim().to_string(), budget, &game_mode),
             army_2: Army::new(player2_name.trim().to_string(), budget, &game_mode),
+            round: 0,
         })
     }
 
     pub fn play(&mut self) {
         while !(self.army_1.is_empty() || self.army_2.is_empty()) {
+            self.round += 1;
+            println!("================================================================================");
+            println!("Round {}", self.round);
+
             let mut unit1 = self.army_1.pop_unit().unwrap();
             let mut unit2 = self.army_2.pop_unit().unwrap();
 
@@ -76,16 +82,20 @@ impl<'a> GladiatorGame<'_> {
                 unit2.lose_life(1);
             } else if unit1.is_alive() { // if only one unit is alive, they gain 1 experience
                 unit1.gain_experience(1);
+                println!("Player 1 unit has gained an experience");
             } else {
                 unit2.gain_experience(1);
+                println!("Player 2 unit has gained an experience");
             }
 
             // push back alive units
             if unit1.is_alive() {
                 self.army_1.push_unit(unit1);
+                println!("Player 2 unit was killed");
             }
             if unit2.is_alive() {
                 self.army_2.push_unit(unit2);
+                println!("Player 1 unit was killed");
             }
         }
         debug_assert!(self.army_1.is_empty() || self.army_2.is_empty());
